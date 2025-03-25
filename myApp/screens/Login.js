@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Image, TouchableOpacity, Linking } from "react-native";
 import { onAuthStateChanged } from "firebase/auth";
-import { Content, Header, Wrapper, Title } from "../components/layout";
+import { Text, View, StyleSheet, Image, TouchableOpacity, Linking } from "react-native";
+import { Content, Header, Wrapper, Title, Logo } from "../components/layout";
 import Button from "../components/controls/Button";
 import FormItem from "../components/controls/FormItem";
 import { auth } from "../firebase-config";
@@ -17,7 +17,7 @@ export default function Login({ navigation }) {
   useEffect(() => {
     const subscriber = onAuthStateChanged(auth, (response) => {
       if (response) {
-        navigation.navigate("Dashboard");
+        navigation.navigate('Panel');
       }
     });
     return subscriber;
@@ -27,91 +27,115 @@ export default function Login({ navigation }) {
     try {
       await Linking.openURL(url);
     } catch (error) {
-      console.error("Error al abrir la URL:", error);
+      console.error('Error al abrir la URL:', error);
     }
   };
 
   const login = async () => {
-    if (user && pass) {
-      setLoading(true);
-      await loginWithEmailPass(user, pass);
-      setUser("");
-      setPass("");
+    if (!user || !pass) return; // Valida campos no vacíos
+  
+    setLoading(true);
+    try {
+      const loginSuccess = await loginWithEmailPass(user, pass);
+      if (loginSuccess) {
+        setUser("");
+        setPass("");
+        navigation.navigate('Panel');
+      }
+    } catch (error) {
+      Alert.alert("Error", "No se pudo iniciar sesión"); // Otra vez pa que entienda vrg
+    } finally {
       setLoading(false);
     }
   };
 
   return (
     <Wrapper backgroundColor={Colors.black}>
-      <Header showBack={true} showCart={false} />
-      <Content>
+      <Content style = {styles.content}>
         <Title title="AudioMix" color={Colors.white} customStyle={styles.title} />
+        <View style = {styles.headerContainer}>
+          <Logo type = 'black' style = {styles.logo}/>
+        </View> 
 
-        <FormItem 
-          value={user}
-          label="Email" 
-          keyboardType="email-address" 
-          onChangeText={setUser}
-          textColor={Colors.white} // Texto en blanco
-        />
-
-        <FormItem 
-          value={pass}
-          secureTextEntry={true} 
-          label="Password" 
-          onChangeText={setPass} 
-          textColor={Colors.white} // Texto en blanco
-        />
-
-        <View style={styles.buttonContainer}>
-          <Button 
-            label="Sign In" 
-            onPress={login} 
-            isLoading={loading} 
-            style={{ backgroundColor: 'white', marginBottom: 10 }} // Color de fondo blanco y margen inferior
-            textStyle={{ color: 'black' }} // Asegúrate de que el texto sea negro
+        <View style = {styles.formContainer}>
+          <FormItem 
+            value={user}
+            label="Email" 
+            keyboardType="email-address" 
+            onChangeText={setUser} 
           />
-          <Button 
-            label="Register" 
-            onPress={() => navigation.navigate("Register")} 
-            style={{ backgroundColor: 'white' }} // Color de fondo blanco
-            textStyle={{ color: 'black' }} // Asegúrate de que el texto sea negro
+
+          <FormItem 
+            value={pass}
+            secureTextEntry={true} 
+            label="Password" 
+            onChangeText={setPass} 
           />
-        </View>
 
-        <View style={styles.textContainer}>
-          <Text style={styles.textLink}>Forgot Password?</Text>
-        </View>
+          <View style={styles.buttonContainer}>
+            <Button label="Sign In" onPress={login} isLoading={loading} type="white" />
+          </View>
 
-        <View style={styles.socialContainer}>
-          <TouchableOpacity onPress={() => openSocialMedia("https://www.instagram.com/tu_cuenta")}>
-            <Image source={require("../assets/instagram(32x32).png")} style={styles.socialIcon} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => openSocialMedia("https://www.facebook.com/tu_cuenta")}>
-            <Image source={require("../assets/facebook(32x32).png")} style={styles.socialIcon} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => openSocialMedia("https://twitter.com/tu_cuenta")}>
-            <Image source={require("../assets/xtwitter(32x32).png")} style={styles.socialIcon} />
+          <View style={styles.textContainer}>
+            <Text style={styles.textLink}>Forgot Password?</Text>
+          </View>
+
+          <View style={styles.socialContainer}>
+            <TouchableOpacity onPress={() => openSocialMedia('https://www.instagram.com/tu_cuenta')}>
+              <Image source={require("../assets/instagram(32x32).png")} style={styles.socialIcon} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => openSocialMedia('https://www.facebook.com/tu_cuenta')}>
+              <Image source={require("../assets/facebook(32x32).png")} style={styles.socialIcon} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => openSocialMedia('https://twitter.com/tu_cuenta')}>
+              <Image source={require("../assets/xtwitter(32x32).png")} style={styles.socialIcon} />
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+            <Text style={styles.textLink2}>New User? Register Now!</Text>
           </TouchableOpacity>
         </View>
-
-        <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-          <Text style={styles.textLink2}>New User? Register Now!</Text>
-        </TouchableOpacity>
+        
       </Content>
     </Wrapper>
   );
 }
 
 const styles = StyleSheet.create({
+  content: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: '100%',
+  },
   title: {
+    paddingTop: 70,
+    paddingBottom: 35,
     color: Colors.white,
     marginBottom: 15,
+  },
+  headerContainer: {
+    paddingTop: 0,
+    paddingBottom: 60,
+    alignItems: 'center',
+    width: '100%',
+  },
+  logo: {
+    width: 150,
+    height: 150,
+    resizeMode: 'contain',
+  },
+  formContainer: {
+    width: '100%',
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    alignItems: "center",
   },
   buttonContainer: {
     marginTop: 40,
     width: "100%",
-    justifyContent: "center", // Centra los botones
   },
   textContainer: {
     marginTop: 50,
@@ -141,16 +165,4 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
   },
-  whiteButton: {
-    backgroundColor: Colors.white, // Fondo blanco
-    borderRadius: 5,
-    paddingVertical: 12,
-    alignItems: "center",
-  },
-  blackText: {
-    color: Colors.black, // Texto negro
-    fontWeight: "bold",
-    fontSize: 16,
-  },
 });
-

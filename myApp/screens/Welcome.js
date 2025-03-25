@@ -26,18 +26,8 @@ export default function Welcome({ navigation }) {
               color={Colors.white} 
               customStyle={styles.subtitle}
             />
-        <Button 
-          onPress={goToLogin} 
-          label={"Sign Up"} 
-          style={{ backgroundColor: 'white', marginBottom: 10 }}
-          textStyle={{ color: 'black' }}
-        />
-        <Button 
-          onPress={goToRegister} 
-          label={"Login In"} 
-          style={{ backgroundColor: 'white' }}
-          textStyle={{ color: 'black' }}
-        />
+        <Button onPress={goToLogin} label={"Sign In"} type="white" />
+        <Button onPress={goToRegister} label={"Sign Up"} type="white" customStyle={styles.secondButton} />
       </Content>
     </Wrapper>
   );

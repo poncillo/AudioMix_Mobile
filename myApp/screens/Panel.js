@@ -90,6 +90,7 @@ export default function Panel({ navigation }) {
         <DropdownMenu 
           visible={menuVisible} 
           onClose={() => setMenuVisible(false)}
+          navigation = {navigation}
         />
       </Content>
     </Wrapper>

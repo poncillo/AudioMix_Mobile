@@ -29,64 +29,84 @@ export default function Register({ navigation }) {
           password: "",
         });
         setLoading(false);
-        navigation.navigate("Login");
+        navigation.navigate("Profile");
       } else {
         setLoading(false);
       }
     }
   };
 
-  const styles = StyleSheet.create({
-    buttonContainer: {
-      marginTop: 20,
-      width: "100%",
-      alignItems: "center", // Asegura que los botones estén centrados
-    },
-    button: {
-      marginVertical: 15, // Aumentamos el espacio entre los botones
-      width: "80%", // Opcional: para que no ocupen todo el ancho
-    },
-  });
-
   return (
-    <Wrapper>
+    <Wrapper style={styles.container} backgroundColor={Colors.white}>
       <Content>
-        <Logo />
+        <Logo style={styles.logo} />
         <Title title="Registrar nueva cuenta" color={Colors.black} customStyle={{ fontSize: 30 }} />
         <FormItem
           value={user.email}
-          label="Correo electrónico"
+          label="Email"
           keyboardType="email-address"
           onChangeText={(value) => setUser((prev) => ({ ...prev, email: value.trim() }))}
-          textColor = {Colors.black}
+          textColor={Colors.black}
+          style={{ borderColor: Colors.black }}
         />
         <FormItem
           value={user.full_name}
-          label="Nombre completo"
+          label="Full Name"
           onChangeText={(value) => setUser((prev) => ({ ...prev, full_name: value }))}
-          textColor = {Colors.black}
+          textColor={Colors.black}
+          style={{ borderColor: Colors.black }}
         />
         <FormItem
           secure={true}
-          label="Contraseña"
+          label="Password"
           value={user.password}
           onChangeText={(value) => setUser((prev) => ({ ...prev, password: value.trim() }))}
-          textColor = {Colors.black}
+          textColor={Colors.black}
+          style={{ borderColor: Colors.black }}
         />
         <View style={styles.buttonContainer}>
-          <Button 
-            onPress={registerUser} 
-            label={"REGISTRARME"} 
-            isLoading={loading} 
-            style={styles.button}
-          />
-          <Button 
-            onPress={goToLogin} 
-            label={"INICIAR SESIÓN"} 
-            style={styles.button}
-          />
+          <View style={styles.buttonWrapper} >
+            <Button 
+              onPress={registerUser} backgroundColor={Colors.white}
+              label={"REGISTER"} 
+              isLoading={loading} 
+              style={styles.button}
+            />
+          </View>
+          <View style={styles.buttonWrapper} backgroundColor={Colors.white} >
+            <Button 
+              onPress={goToLogin} 
+              label={"LOGIN"} 
+              style={styles.button}
+            />
+          </View>
         </View>
       </Content>
     </Wrapper>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: Colors.white,
+  },
+  buttonContainer: {
+    marginTop: 40,
+    width: "100%",
+    alignItems: "center",
+  },
+  buttonWrapper: {
+    marginBottom: 5,
+    width: "100%",
+  },
+  button: {
+    width: "80%",
+  },
+  logo: {
+    marginBottom: 40,
+    marginTop: 30,
+  },
+});

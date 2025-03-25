@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Alert, View, Image, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { getAuth, updateEmail, updatePassword } from "firebase/auth";
 import { setDoc, doc, onSnapshot } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; // <-- Importar funciones de Storage
 import { db, app, storage } from "../firebase-config";
 import * as ImagePicker from 'expo-image-picker';
 import Button from "../components/controls/Button";
@@ -52,40 +52,21 @@ const Profile = () => {
       aspect: [1, 1],
       quality: 1,
     });
-
-    if (!result.canceled) {
-      const source = result.assets[0].uri;
-      await uploadImage(source);
-    }
-  };
-
-  const uploadImage = async (uri) => {
-    if (!auth.currentUser) return;
-
-    try {
-      setLoading(true);
-      const response = await fetch(uri);
+  
+    if (!result.cancelled) {
+      const response = await fetch(result.uri);
       const blob = await response.blob();
-
-      const imageRef = ref(storage, `profile_pictures/${auth.currentUser.uid}`);
-      await uploadBytes(imageRef, blob);
-      const downloadURL = await getDownloadURL(imageRef);
-
-      await setDoc(
-        doc(db, "users", auth.currentUser.uid),
-        { profile_picture: downloadURL },
-        { merge: true }
-      );
-
-      setData((prev) => ({ ...prev, profile_picture: downloadURL }));
-    } catch (error) {
-      console.error("Error subiendo imagen:", error);
-      Alert.alert("Error", "No se pudo subir la imagen.");
-    } finally {
-      setLoading(false);
+      const storageRef = ref(storage, `profile_pictures/${auth.currentUser.uid}.jpg`);
+  
+      // Upload the image to Firebase Storage
+      await uploadBytes(storageRef, blob).then(async (snapshot) => {
+        // Get the download URL
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        setData((prev) => ({ ...prev, profile_picture: downloadURL }));
+      });
     }
   };
-
+  
   const updateUser = async () => {
     setLoading(true);
     if (auth.currentUser) {
@@ -93,7 +74,6 @@ const Profile = () => {
         await setDoc(doc(db, "users", auth.currentUser.uid), data, {
           merge: true,
         });
-        Alert.alert("Éxito", "Perfil actualizado correctamente");
       } catch (error) {
         console.error(error);
         Alert.alert("Error", JSON.stringify(error));
@@ -165,41 +145,41 @@ const Profile = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "black",
-    flex: 1,
-  },
-  imageContainer: {
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-  },
-  placeholder: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: "#333",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  whiteText: {
-    color: "white",
-  },
-  whiteButton: {
-    backgroundColor: "white",
-    borderRadius: 5,
-    paddingVertical: 12,
-    alignItems: "center",
-  },
-  blackText: {
-    color: "black",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-});
+    container: {
+      backgroundColor: "black",
+      flex: 1,
+    },
+    imageContainer: {
+      alignItems: "center",
+      marginBottom: 20,
+    },
+    profileImage: {
+      width: 100,
+      height: 100,
+      borderRadius: 50,
+    },
+    placeholder: {
+      width: 100,
+      height: 100,
+      borderRadius: 50,
+      backgroundColor: "#333",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    whiteText: {
+      color: "white",
+    },
+    whiteButton: {
+      backgroundColor: "white",
+      borderRadius: 5,
+      paddingVertical: 12,
+      alignItems: "center",
+    },
+    blackText: {
+      color: "black",
+      fontWeight: "bold",
+      fontSize: 16,
+    },
+  });
 
 export default Profile;

@@ -33,8 +33,8 @@ export const loginWithEmailPass = async (email, password) => {
       Alert.alert("Error", "Usuario no registrado en la base de datos.");
       return false;
     }
-
     return true; // Usuario válido
+    
   } catch (error) {
     Alert.alert("Error", "Correo o contraseña incorrectos.");
     return false;

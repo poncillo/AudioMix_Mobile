@@ -2,7 +2,7 @@ import { TouchableOpacity, Text, StyleSheet, ActivityIndicator} from "react-nati
 import Colors from "../../constants/Colors";
 import Fonts from "../../constants/Fonts";
 
-export default function Button({ label, type = "black", onPress, isLoading = false,}) {
+export default function Button({ label, type = "black", onPress, isLoading = false, customStyle = {}}) {
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -10,13 +10,17 @@ export default function Button({ label, type = "black", onPress, isLoading = fal
         styles.container,
         type === "white" && styles.containerWhite,
         isLoading && styles.disableButton,
+        customStyle
       ]}
       disabled={isLoading}
     >
       {isLoading && (
         <ActivityIndicator style={styles.activity} color={Colors.white} />
       )}
-      <Text style={styles.text}>{label}</Text>
+      <Text style={[
+        styles.text,
+        type === "white" && styles.textWhite
+      ]}>{label}</Text>
     </TouchableOpacity>
   );
 }

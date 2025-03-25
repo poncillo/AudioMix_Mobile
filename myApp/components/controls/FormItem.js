@@ -3,14 +3,14 @@ import {View, Text, TextInput, StyleSheet} from 'react-native';
 import Fonts from '../../constants/Fonts';
 import Colors from '../../constants/Colors';
 
-const FormItem = ({label, placeholder, value, onChangeText, secureTextEntry, textColor}) => {
+const FormItem = ({label, placeholder, value, onChangeText, secureTextEntry, textColor = Colors.white}) => {
   return(
     <View style={styles.container}>
       {label && <Text style={[styles.label, { color: textColor }]}>{label}</Text>}
       <TextInput 
         style={[styles.input, { color: textColor }]}
         placeholder={placeholder}
-        placeholderTextColor={Colors.white}
+        placeholderTextColor={textColor}
         value={value}
         onChangeText={onChangeText}
         secureTextEntry={secureTextEntry}
@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
     paddingTop: 15,
   },
   label: {
-    color: Colors.white,
     fontSize: Fonts.size.small,
     fontFamily: Fonts.family.montserratMedium,
     textAlign: 'center',
@@ -34,7 +33,6 @@ const styles = StyleSheet.create({
   input: {
     borderBottomColor: Colors.white,
     borderBottomWidth: 2,
-    color: Colors.white,
     fontSize: Fonts.size.normal,
     fontFamily: Fonts.family.montserratRegular,
     paddingBottom: 8,

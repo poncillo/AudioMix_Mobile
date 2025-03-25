@@ -1,0 +1,13 @@
+Usuarios de Firebase...
+
+User1...
+email: soyadmin@gmail.com
+password: 123456
+
+User2...
+email: "megustaelpilin@example.com"
+password: 111111
+
+User3...
+email: donfermin1@gmail.com
+password: 123456

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FlatList, ScrollView, Alert } from "react-native";
+import { FlatList, ScrollView, Alert, StyleSheet, View } from "react-native";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, query, orderBy, onSnapshot, doc, deleteDoc } from "firebase/firestore";
 import { Content, Header, Wrapper } from "../components/layout";
@@ -81,17 +81,17 @@ export default function Home({ navigation }) {
   };
 
   return (
-    <Wrapper>
+    <Wrapper style={styles.container}>
+      <Header title="" showCart={false} style={styles.header} />
       <StateModal
         selected={selected}
         setSelected={setSelected}
         visible={visible}
         onClose={toggleModal}
       />
-      <Header title="Dashboard" showCart={false} />
-      <Content>
-        <Button label="Cerrar sesión" onPress={logout} />
-        <Button label="Crear nuevo" onPress={createNew} />
+      <Content style={styles.content}>
+        <Button label="Cerrar sesión" onPress={logout} textStyle={styles.buttonText} />
+        <Button label="Crear nuevo" onPress={createNew} textStyle={styles.buttonText} />
         <ScrollView horizontal={true} style={{ width: '100%' }}>
           <FlatList
             data={data}
@@ -105,3 +105,21 @@ export default function Home({ navigation }) {
     </Wrapper>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "black",
+    flex: 1,
+  },
+  header: {
+    backgroundColor: "black",
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center', 
+  },
+  buttonText: {
+    color: "white", 
+  },
+});
