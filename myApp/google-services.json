@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1000354916398",
+    "project_id": "anteproyecto-base-de-datos",
+    "storage_bucket": "anteproyecto-base-de-datos.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000354916398:android:a9f2bf936fd62161f717bf",
+        "android_client_info": {
+          "package_name": "com.audiomix.myapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1000354916398-2r6ot799h62ki7memp4t80pl3k5rmacm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.audiomix.myapp",
+            "certificate_hash": "6bda5889ecd11ef834fd2e09deeeb1ac1a23382f"
+          }
+        },
+        {
+          "client_id": "1000354916398-os4m931q39matkdrldt2kdglk3hn0a4f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTuHRZXEOOJU696wqfncYKyCn2Y-Yftd8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1000354916398-os4m931q39matkdrldt2kdglk3hn0a4f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
