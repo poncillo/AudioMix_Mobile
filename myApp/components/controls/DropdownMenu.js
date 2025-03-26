@@ -8,10 +8,8 @@ import { auth } from '../../firebase-config';
 export default function DropdownMenu({ visible, onClose, navigation }) {
   const menuItems = [
     { id: 1, title: 'Home' },
-    { id: 2, title: 'Profile' },
-    { id: 3, title: 'Technical Support' },
-    { id: 4, title: 'Log Out' },
-    { id: 5, title: 'States' },
+    { id: 2, title: 'Technical Support' },
+    { id: 3, title: 'Log Out' }
   ];
 
   const handleLogout = async () => {
@@ -70,7 +68,24 @@ export default function DropdownMenu({ visible, onClose, navigation }) {
             style={styles.menuItem}
             onPress={() => {
               onClose();
-              if (item.id === 4) handleLogout();
+              switch (item.title) {
+                case 'Home':
+                  navigation.navigate('Dashboard', {
+                    screen: 'Home'
+                  });
+                  break;
+                case 'Profile':
+                  navigation.navigate('Profile');
+                  break;
+                case 'Technical Support':
+                  navigation.navigate('Dashboard', {
+                    screen: 'Technical Support'
+                  });
+                  break;
+                case 'Log Out':
+                  handleLogout();
+                  break;
+              }
             }}
           >
             <Text style={styles.menuText}>{item.title}</Text>

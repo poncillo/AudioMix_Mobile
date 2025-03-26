@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Dimensions
 import { Ionicons, EvilIcons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import Fonts from '../constants/Fonts';
-import CategoryMenu from '../components/controls/CategoryMenu';
 import DropdownMenu from '../components/controls/DropdownMenu';
 import { useState } from 'react';
 
@@ -12,7 +11,6 @@ const CAROUSEL_WIDTH = width * 0.8;
 
 export default function Panel({ navigation }) {
   const [menuVisible, setMenuVisible] = useState(false);
-  const [categoryVisible, setCategoryVisible] = useState(false);
 
   return (
     <Wrapper backgroundColor={Colors.black}>
@@ -63,19 +61,22 @@ export default function Panel({ navigation }) {
 
         {/* Bottom Navigation */}
         <View style={styles.bottomNav}>
-          <TouchableOpacity 
-            style={styles.navItem} 
-            onPress={() => setCategoryVisible(true)}
+          <TouchableOpacity
+            style={styles.navItem}
+            onPress={() => navigation.navigate('Dashboard', { screen: 'Categories' })}
           >
             <Ionicons name="grid-outline" size={24} color={Colors.white} />
             <Text style={styles.navText}>Categories</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navItem}>
+          <TouchableOpacity
+            style={styles.navItem}
+            onPress={() => navigation.navigate('Profile')}
+          >
             <Ionicons name="person-outline" size={24} color={Colors.white} />
             <Text style={styles.navText}>Profile</Text>
           </TouchableOpacity>
-          <TouchableOpacity 
-            style={styles.navItem} 
+          <TouchableOpacity
+            style={styles.navItem}
             onPress={() => setMenuVisible(true)}
           >
             <Ionicons name="menu-outline" size={24} color={Colors.white} />
@@ -83,11 +84,7 @@ export default function Panel({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        <CategoryMenu 
-          visible={categoryVisible} 
-          onClose={() => setCategoryVisible(false)}
-        />
-        <DropdownMenu 
+        <DropdownMenu
           visible={menuVisible} 
           onClose={() => setMenuVisible(false)}
           navigation = {navigation}

@@ -64,7 +64,7 @@ const WarrantyAndTerms = ({ navigation }) => {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.navigate('Technical Support')}>
           <Icon name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>GARANTÍA Y TÉRMINOS</Text>
