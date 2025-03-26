@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Dimensions
 import { Ionicons, EvilIcons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import Fonts from '../constants/Fonts';
-import CategoryMenu from '../components/controls/CategoryMenu';
 import DropdownMenu from '../components/controls/DropdownMenu';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -65,13 +64,22 @@ export default function Panel() {
 
         {/* Bottom Navigation */}
         <View style={styles.bottomNav}>
-          <TouchableOpacity 
-            style={styles.navItem} 
-            onPress={() => setCategoryVisible(true)}
+          <TouchableOpacity
+            style={styles.navItem}
+            onPress={() => navigation.navigate('Dashboard', { screen: 'Categories' })}
           >
             <Ionicons name="grid-outline" size={24} color={Colors.white} />
             <Text style={styles.navText}>Categories</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.navItem}
+            onPress={() => navigation.navigate('Profile')}
+          >
+            <Ionicons name="person-outline" size={24} color={Colors.white} />
+            <Text style={styles.navText}>Profile</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.navItem}
 
           <TouchableOpacity 
             style={styles.navItem} 
@@ -89,6 +97,8 @@ export default function Panel() {
           </TouchableOpacity>
         </View>
 
+
+        <DropdownMenu
         {/* Menús Modales */}
         <CategoryMenu 
           visible={categoryVisible} 

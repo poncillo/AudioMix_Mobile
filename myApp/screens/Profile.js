@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Alert, View, Image, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { getAuth, updateEmail, updatePassword } from "firebase/auth";
 import { setDoc, doc, onSnapshot } from "firebase/firestore";
@@ -7,10 +7,11 @@ import { db, app, storage } from "../firebase-config";
 import * as ImagePicker from 'expo-image-picker';
 import Button from "../components/controls/Button";
 import FormItem from "../components/controls/FormItem";
+import Icon from "react-native-vector-icons/MaterialIcons";
 import { Content, Header, Wrapper } from "../components/layout";
 import Colors from "../constants/Colors";
 
-const Profile = () => {
+const Profile = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     full_name: "",
@@ -104,6 +105,19 @@ const Profile = () => {
   };
 
   return (
+    <View style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.navigate('Panel')}>
+          <Icon name="arrow-back" size={24} color="white" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>PERFIL</Text>
+        <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+          <Icon name="menu" size={24} color="white" />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.content}>
     <Wrapper style={styles.container} backgroundColor={Colors.black}>
       <Content>
         <TouchableOpacity onPress={pickImage}>
@@ -161,15 +175,31 @@ const Profile = () => {
           textStyle={styles.blackText}
           backgroundColor={Colors.white}
         />
-      </Content>
-    </Wrapper>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "black",
     flex: 1,
+    backgroundColor: "black",
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    paddingTop: 40,
+  },
+  headerTitle: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  content: {
+    flex: 1,
+    padding: 20,
   },
   imageContainer: {
     alignItems: "center",
@@ -196,6 +226,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: 12,
     alignItems: "center",
+    marginTop: 20,
   },
   blackText: {
     color: Colors.black,

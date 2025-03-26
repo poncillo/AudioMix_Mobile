@@ -17,13 +17,18 @@ const TechnicalSupport = ({ navigation }) => {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-          <Icon name="menu" size={24} color="white" />
+        <TouchableOpacity onPress={() => navigation.navigate('Panel')}>
+          <Icon name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>AUDIOMIX MOBILE</Text>
-        <TouchableOpacity>
-          <Icon name="search" size={24} color="white" />
-        </TouchableOpacity>
+        <View style={{flexDirection: 'row', gap: 15}}>
+          <TouchableOpacity>
+            <Icon name="search" size={24} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+            <Icon name="menu" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Logo */}
@@ -69,21 +74,6 @@ const TechnicalSupport = ({ navigation }) => {
         ))}
       </ScrollView>
 
-      {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
-        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Home')}>
-          <Icon name="home" size={24} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Icon name="shopping-cart" size={24} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Icon name="message" size={24} color="white" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Icon name="people" size={24} color="white" />
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
@@ -136,15 +126,6 @@ const styles = StyleSheet.create({
   optionText: {
     color: 'white',
     fontSize: 16,
-  },
-  bottomNav: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 15,
-    backgroundColor: '#333',
-  },
-  navItem: {
-    alignItems: 'center',
   },
 });
 
