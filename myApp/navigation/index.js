@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native';
 import Dashboard from './Dashboard';
 import External from './External';
 import Register from '../screens/Register';
+import Profile from '../screens/Profile';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ export default function Navigation() {
           <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />
           <Stack.Screen name="External" component={External} options={{ headerShown: false }} />
           <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+          <Stack.Screen name='Profile' component={Profile}/>
         </Stack.Navigator>
       </SafeAreaView>
     </NavigationContainer>

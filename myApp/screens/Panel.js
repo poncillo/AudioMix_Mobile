@@ -6,13 +6,15 @@ import Fonts from '../constants/Fonts';
 import CategoryMenu from '../components/controls/CategoryMenu';
 import DropdownMenu from '../components/controls/DropdownMenu';
 import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 const CAROUSEL_WIDTH = width * 0.8;
 
-export default function Panel({ navigation }) {
+export default function Panel() {
   const [menuVisible, setMenuVisible] = useState(false);
   const [categoryVisible, setCategoryVisible] = useState(false);
+  const navigation = useNavigation(); // Corrección: Usar useNavigation directamente
 
   return (
     <Wrapper backgroundColor={Colors.black}>
@@ -31,7 +33,7 @@ export default function Panel({ navigation }) {
             </View>
           </View>
 
-          {/* Logo Section - Opción 2 */}
+          {/* Logo Section */}
           <View style={styles.logoSection}>
             <Logo type="white" width={150} />
           </View>
@@ -70,10 +72,14 @@ export default function Panel({ navigation }) {
             <Ionicons name="grid-outline" size={24} color={Colors.white} />
             <Text style={styles.navText}>Categories</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navItem}>
+
+          <TouchableOpacity 
+            style={styles.navItem} 
+            onPress={() => navigation.navigate('Profile')}>
             <Ionicons name="person-outline" size={24} color={Colors.white} />
             <Text style={styles.navText}>Profile</Text>
           </TouchableOpacity>
+
           <TouchableOpacity 
             style={styles.navItem} 
             onPress={() => setMenuVisible(true)}
@@ -83,6 +89,7 @@ export default function Panel({ navigation }) {
           </TouchableOpacity>
         </View>
 
+        {/* Menús Modales */}
         <CategoryMenu 
           visible={categoryVisible} 
           onClose={() => setCategoryVisible(false)}
@@ -90,7 +97,7 @@ export default function Panel({ navigation }) {
         <DropdownMenu 
           visible={menuVisible} 
           onClose={() => setMenuVisible(false)}
-          navigation = {navigation}
+          navigation={navigation} // Se pasa la navegación correctamente
         />
       </Content>
     </Wrapper>

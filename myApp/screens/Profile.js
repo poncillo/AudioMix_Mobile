@@ -8,6 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 import Button from "../components/controls/Button";
 import FormItem from "../components/controls/FormItem";
 import { Content, Header, Wrapper } from "../components/layout";
+import Colors from "../constants/Colors";
 
 const Profile = () => {
   const [loading, setLoading] = useState(false);
@@ -103,7 +104,7 @@ const Profile = () => {
   };
 
   return (
-    <Wrapper style={styles.container}>
+    <Wrapper style={styles.container} backgroundColor={Colors.black}>
       <Content>
         <TouchableOpacity onPress={pickImage}>
           <View style={styles.imageContainer}>
@@ -158,6 +159,7 @@ const Profile = () => {
           isLoading={loading}
           style={styles.whiteButton}
           textStyle={styles.blackText}
+          backgroundColor={Colors.white}
         />
       </Content>
     </Wrapper>
@@ -190,13 +192,13 @@ const styles = StyleSheet.create({
     color: "white",
   },
   whiteButton: {
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     borderRadius: 5,
     paddingVertical: 12,
     alignItems: "center",
   },
   blackText: {
-    color: "black",
+    color: Colors.black,
     fontWeight: "bold",
     fontSize: 16,
   },

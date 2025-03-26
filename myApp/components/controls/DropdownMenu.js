@@ -8,10 +8,9 @@ import { auth } from '../../firebase-config';
 export default function DropdownMenu({ visible, onClose, navigation }) {
   const menuItems = [
     { id: 1, title: 'Home' },
-    { id: 2, title: 'Profile' },
-    { id: 3, title: 'Technical Support' },
-    { id: 4, title: 'Log Out' },
-    { id: 5, title: 'States' },
+    { id: 2, title: 'Technical Support' },
+    { id: 3, title: 'Log Out' },
+    { id: 4, title: 'States' },
   ];
 
   const handleLogout = async () => {
