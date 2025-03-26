@@ -10,6 +10,8 @@ export default function DropdownMenu({ visible, onClose, navigation }) {
     { id: 1, title: 'Home' },
     { id: 2, title: 'Technical Support' },
     { id: 3, title: 'Log Out' }
+    { id: 3, title: 'Log Out' },
+    { id: 4, title: 'States' },
   ];
 
   const handleLogout = async () => {

@@ -8,6 +8,8 @@ import * as ImagePicker from 'expo-image-picker';
 import Button from "../components/controls/Button";
 import FormItem from "../components/controls/FormItem";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { Content, Header, Wrapper } from "../components/layout";
+import Colors from "../constants/Colors";
 
 const Profile = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -116,6 +118,8 @@ const Profile = ({ navigation }) => {
       </View>
 
       <View style={styles.content}>
+    <Wrapper style={styles.container} backgroundColor={Colors.black}>
+      <Content>
         <TouchableOpacity onPress={pickImage}>
           <View style={styles.imageContainer}>
             {data.profile_picture ? (
@@ -169,6 +173,7 @@ const Profile = ({ navigation }) => {
           isLoading={loading}
           style={styles.whiteButton}
           textStyle={styles.blackText}
+          backgroundColor={Colors.white}
         />
       </View>
     </View>
@@ -217,14 +222,14 @@ const styles = StyleSheet.create({
     color: "white",
   },
   whiteButton: {
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     borderRadius: 5,
     paddingVertical: 12,
     alignItems: "center",
     marginTop: 20,
   },
   blackText: {
-    color: "black",
+    color: Colors.black,
     fontWeight: "bold",
     fontSize: 16,
   },
