@@ -15,7 +15,7 @@ export default function Panel() {
   const [categoryVisible, setCategoryVisible] = useState(false);
   const navigation = useNavigation(); // Corrección: Usar useNavigation directamente
 
-  return (
+  return ( //Hello, submit the repository
     <Wrapper backgroundColor={Colors.black}>
       <Content style={styles.content}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
