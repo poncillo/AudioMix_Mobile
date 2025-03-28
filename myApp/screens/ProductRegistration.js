@@ -1,39 +1,38 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, TextInput, Modal } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../firebase-config';
 
 const ProductRegistration = ({ navigation }) => {
   const [formData, setFormData] = useState({
-    productType: '',
-    model: '',
-    serialNumber: '',
-    purchaseDate: '',
-    storeName: '',
-    receiptNumber: '',
     name: '',
-    email: '',
-    phone: ''
+    category: '',
+    price: '',
+    stock: ''
   });
 
-  const [showProductTypes, setShowProductTypes] = useState(false);
+  const handleSubmit = async () => {
+    try {
+      if (!formData.name || !formData.category || !formData.price || !formData.stock) {
+        Alert.alert('Error', 'Please, full all fields');
+        return;
+      }
 
-  const productTypes = [
-    "Seleccionar tipo de producto",
-    "Micrófonos",
-    "Interfaces de Audio",
-    "Monitores de Estudio",
-    "Controladores MIDI",
-    "Mezcladores",
-    "Procesadores de Señal",
-    "Amplificadores"
-  ];
+      // Aquí lo pasamos a guardar en firestore...
+      await addDoc(collection(db, 'products'), {
+        name: formData.name,
+        category: formData.category,
+        price: parseFloat(formData.price),
+        num_stock: parseInt(formData.stock, 10)
+      });
 
-  const handleSubmit = () => {
-    // Aquí iría la lógica para enviar los datos
-    console.log('Datos del formulario:', formData);
-    // Mostrar mensaje de éxito y regresar
-    alert('Producto registrado exitosamente');
-    navigation.navigate('Technical Support');
+      Alert.alert('Success', 'Product registered successfully');
+      navigation.navigate('Category'); // Redirigir a la pantalla de categorías
+    } catch (error) {
+      console.error('Error cant register:', error);
+      Alert.alert('Error', 'cant register the product');
+    }
   };
 
   const FormInput = ({ label, value, onChangeText, placeholder, keyboardType = 'default' }) => (
@@ -54,134 +53,44 @@ const ProductRegistration = ({ navigation }) => {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate('Technical Support')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Categories')}>
           <Icon name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>REGISTRO DE PRODUCTO</Text>
-        <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-          <Icon name="menu" size={24} color="white" />
-        </TouchableOpacity>
-      </View>
-
-      {/* Logo */}
-      <View style={styles.logoContainer}>
-        <Image
-          source={require('../assets/AudioMixlogo-01.png')}
-          style={styles.logo}
-        />
+        <Text style={styles.headerTitle}>PRODUCT REGISTRATION</Text>
       </View>
 
       {/* Form */}
-      <ScrollView style={styles.formContainer}>
-        {/* Product Type Selector */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Tipo de Producto</Text>
-          <TouchableOpacity 
-            style={styles.input}
-            onPress={() => setShowProductTypes(true)}
-          >
-            <Text style={[styles.inputText, !formData.productType && styles.placeholder]}>
-              {formData.productType || "Seleccionar tipo de producto"}
-            </Text>
-          </TouchableOpacity>
-        </View>
-
+      <View style={styles.formContainer}>
         <FormInput
-          label="Modelo"
-          value={formData.model}
-          onChangeText={(text) => setFormData({ ...formData, model: text })}
-          placeholder="Ingrese el modelo del producto"
-        />
-
-        <FormInput
-          label="Número de Serie"
-          value={formData.serialNumber}
-          onChangeText={(text) => setFormData({ ...formData, serialNumber: text })}
-          placeholder="Ingrese el número de serie"
-        />
-
-        <FormInput
-          label="Fecha de Compra"
-          value={formData.purchaseDate}
-          onChangeText={(text) => setFormData({ ...formData, purchaseDate: text })}
-          placeholder="DD/MM/AAAA"
-        />
-
-        <FormInput
-          label="Tienda de Compra"
-          value={formData.storeName}
-          onChangeText={(text) => setFormData({ ...formData, storeName: text })}
-          placeholder="Nombre de la tienda"
-        />
-
-        <FormInput
-          label="Número de Factura"
-          value={formData.receiptNumber}
-          onChangeText={(text) => setFormData({ ...formData, receiptNumber: text })}
-          placeholder="Número de factura o recibo"
-        />
-
-        <Text style={styles.sectionTitle}>Información de Contacto</Text>
-
-        <FormInput
-          label="Nombre Completo"
+          label="Nombre"
           value={formData.name}
           onChangeText={(text) => setFormData({ ...formData, name: text })}
-          placeholder="Su nombre completo"
+          placeholder="Insert Name"
         />
-
         <FormInput
-          label="Correo Electrónico"
-          value={formData.email}
-          onChangeText={(text) => setFormData({ ...formData, email: text })}
-          placeholder="correo@ejemplo.com"
-          keyboardType="email-address"
+          label="Categoría"
+          value={formData.category}
+          onChangeText={(text) => setFormData({ ...formData, category: text })}
+          placeholder="Insert Category"
         />
-
         <FormInput
-          label="Teléfono"
-          value={formData.phone}
-          onChangeText={(text) => setFormData({ ...formData, phone: text })}
-          placeholder="Su número de teléfono"
-          keyboardType="phone-pad"
+          label="Precio"
+          value={formData.price}
+          onChangeText={(text) => setFormData({ ...formData, price: text })}
+          placeholder="What's the price?"
+          keyboardType="numeric"
         />
-
+        <FormInput
+          label="Stock"
+          value={formData.stock}
+          onChangeText={(text) => setFormData({ ...formData, stock: text })}
+          placeholder="Numbers in stock"
+          keyboardType="numeric"
+        />
         <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
           <Text style={styles.submitButtonText}>Registrar Producto</Text>
         </TouchableOpacity>
-      </ScrollView>
-
-      {/* Product Type Modal */}
-      <Modal
-        visible={showProductTypes}
-        transparent={true}
-        animationType="slide"
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Seleccionar Tipo de Producto</Text>
-              <TouchableOpacity onPress={() => setShowProductTypes(false)}>
-                <Icon name="close" size={24} color="white" />
-              </TouchableOpacity>
-            </View>
-            <ScrollView>
-              {productTypes.map((type, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={styles.optionButton}
-                  onPress={() => {
-                    setFormData({ ...formData, productType: type });
-                    setShowProductTypes(false);
-                  }}
-                >
-                  <Text style={styles.optionText}>{type}</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </View>
-        </View>
-      </Modal>
+      </View>
     </View>
   );
 };
@@ -193,7 +102,6 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     padding: 16,
     paddingTop: 40,
@@ -202,25 +110,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  logoContainer: {
-    alignItems: 'center',
-    marginVertical: 20,
-  },
-  logo: {
-    width: 80,
-    height: 80,
+    marginLeft: 16,
   },
   formContainer: {
     flex: 1,
     padding: 20,
-  },
-  sectionTitle: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 20,
-    marginBottom: 10,
   },
   inputContainer: {
     marginBottom: 20,
@@ -237,60 +131,18 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
   },
-  inputText: {
-    color: 'white',
-    fontSize: 16,
-  },
-  placeholder: {
-    color: '#666',
-  },
   submitButton: {
     backgroundColor: '#007AFF',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
     marginTop: 20,
-    marginBottom: 40,
   },
   submitButtonText: {
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-  },
-  modalContent: {
-    backgroundColor: '#222',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    paddingBottom: 20,
-    maxHeight: '80%',
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#333',
-  },
-  modalTitle: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  optionButton: {
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#333',
-  },
-  optionText: {
-    color: 'white',
-    fontSize: 16,
-  },
 });
 
-export default ProductRegistration; 
+export default ProductRegistration;

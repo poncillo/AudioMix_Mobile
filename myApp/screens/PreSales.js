@@ -63,7 +63,7 @@ const PreSales = ({ navigation }) => {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate('Technical Support')}>
+        <TouchableOpacity onPress={() => navigation.navigate('TechnicalSupport')}>
           <Icon name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>PRE-SALES</Text>

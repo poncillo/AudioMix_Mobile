@@ -63,7 +63,7 @@ const FAQS = ({ navigation }) => {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate('Technical Support')}> //Regresar a la pantalla anterior
+        <TouchableOpacity onPress={() => navigation.navigate('TechnicalSupport')}> {/* Regresar a la pantalla anterior */}
           <Icon name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>FAQ'S</Text>

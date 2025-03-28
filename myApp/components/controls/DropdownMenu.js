@@ -7,8 +7,8 @@ import { logoutAuth } from '../../services/firebase';
 export default function DropdownMenu({ visible, onClose, navigation }) {
 
   const menuItems = [
-    { id: 1, title: 'Home', action: () => navigation.navigate('Panel') },
-    { id: 2, title: 'Technical Support', action: () => { console.log('Navigating to Technical Support'); navigation.navigate('TechnicalSupport');} },
+    { id: 1, title: 'Home', action: () => navigation.navigate('Dashboard', { screen: 'Home' }) },
+    { id: 2, title: 'Technical Support', action: () => navigation.navigate('Dashboard', { screen: 'TechnicalSupport' }) },
     { id: 3, title: 'Log Out', action: handleLogout },
   ];
 

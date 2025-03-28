@@ -123,9 +123,7 @@ const Profile = ({ navigation }) => {
           <Icon name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>PERFIL</Text>
-        <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-          <Icon name="menu" size={24} color="white" />
-        </TouchableOpacity>
+        <View style={{ width: 24 }} />
       </View>
 
       <Wrapper style={styles.container} backgroundColor={Colors.black}>

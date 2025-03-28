@@ -66,7 +66,7 @@ const CustomerSupport = ({ navigation }) => {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Technical Support")}
+          onPress={() => navigation.navigate("TechnicalSupport")}
         >
           <Icon name="arrow-back" size={24} color="white" /> 
         </TouchableOpacity>
