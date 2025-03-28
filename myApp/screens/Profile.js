@@ -8,7 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 import Button from "../components/controls/Button";
 import FormItem from "../components/controls/FormItem";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { Content, Header, Wrapper } from "../components/layout";
+import { Content, Wrapper } from "../components/layout";
 import Colors from "../constants/Colors";
 
 const Profile = ({ navigation }) => {
@@ -49,7 +49,7 @@ const Profile = ({ navigation }) => {
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaType.Images, // Updated to use ImagePicker.MediaType
+      mediaTypes: ImagePicker.MediaType.Images,
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
@@ -106,7 +106,7 @@ const Profile = ({ navigation }) => {
         };
 
         await setDoc(doc(db, "users", auth.currentUser.uid), updatedData, { merge: true });
-        Alert.alert("Succes", "Profile update successfully.");
+        Alert.alert("Success", "Profile updated successfully.");
       } catch (error) {
         console.error(error);
         Alert.alert("Error", "Can't update profile.");
@@ -128,65 +128,65 @@ const Profile = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.content}>
-    <Wrapper style={styles.container} backgroundColor={Colors.black}>
-      <Content>
-        <TouchableOpacity onPress={pickImage}>
-          <View style={styles.imageContainer}>
-            {data.profile_picture ? (
-              <Image source={{ uri: data.profile_picture }} style={styles.profileImage} />
-            ) : (
-              <View style={styles.placeholder}>
-                <Text style={styles.whiteText}>Choose a Photo</Text>
-              </View>
-            )}
-          </View>
-        </TouchableOpacity>
+      <Wrapper style={styles.container} backgroundColor={Colors.black}>
+        <Content>
+          <TouchableOpacity onPress={pickImage}>
+            <View style={styles.imageContainer}>
+              {data.profile_picture ? (
+                <Image source={{ uri: data.profile_picture }} style={styles.profileImage} />
+              ) : (
+                <View style={styles.placeholder}>
+                  <Text style={styles.whiteText}>Choose a Photo</Text>
+                </View>
+              )}
+            </View>
+          </TouchableOpacity>
 
-        <FormItem
-          value={data.full_name}
-          label="Full Name"
-          onChangeText={(value) => setData((prev) => ({ ...prev, full_name: value }))} 
-          textColor={"white"}
-        />
-        <FormItem value={data.email} label="Email" editable={false} textColor={"white"} />
-        <FormItem value="******" label="Password" editable={false} textColor={"white"} />
-        <FormItem
-          value={data.phone}
-          label="Phone"
-          keyboardType="phone-pad"
-          onChangeText={(value) => setData((prev) => ({ ...prev, phone: value.trim() }))} 
-          textColor={"white"}
-        />
-        <FormItem
-          value={data.age}
-          label="Age"
-          keyboardType="number-pad"
-          onChangeText={(value) => setData((prev) => ({ ...prev, age: value.trim() }))} 
-          textColor={"white"}
-        />
-        <FormItem
-          value={data.country}
-          label="Country"
-          onChangeText={(value) => setData((prev) => ({ ...prev, country: value }))} 
-          textColor={"white"}
-        />
-        <FormItem
-          value={data.address}
-          label="Adress"
-          onChangeText={(value) => setData((prev) => ({ ...prev, address: value }))} 
-          textColor={"white"}
-        />
+          <FormItem
+            value={data.full_name}
+            label="Full Name"
+            onChangeText={(value) => setData((prev) => ({ ...prev, full_name: value }))}
+            textColor={"white"}
+          />
+          <FormItem value={data.email} label="Email" editable={false} textColor={"white"} />
+          <FormItem value="******" label="Password" editable={false} textColor={"white"} />
+          <FormItem
+            value={data.phone}
+            label="Phone"
+            keyboardType="phone-pad"
+            onChangeText={(value) => setData((prev) => ({ ...prev, phone: value.trim() }))}
+            textColor={"white"}
+          />
+          <FormItem
+            value={data.age}
+            label="Age"
+            keyboardType="number-pad"
+            onChangeText={(value) => setData((prev) => ({ ...prev, age: value.trim() }))}
+            textColor={"white"}
+          />
+          <FormItem
+            value={data.country}
+            label="Country"
+            onChangeText={(value) => setData((prev) => ({ ...prev, country: value }))}
+            textColor={"white"}
+          />
+          <FormItem
+            value={data.address}
+            label="Address"
+            onChangeText={(value) => setData((prev) => ({ ...prev, address: value }))}
+            textColor={"white"}
+          />
 
-        <Button
-          onPress={updateUser}
-          label={"SUBMIT UPDATE"}
-          isLoading={loading}
-          style={styles.whiteButton}
-          textStyle={styles.blackText}
-          backgroundColor={Colors.white}
-        />
-      </View>
+          <Button
+            onPress={updateUser}
+            label={"SUBMIT UPDATE"}
+            isLoading={loading}
+            style={styles.whiteButton}
+            textStyle={styles.blackText}
+            backgroundColor={Colors.white}
+          />
+        </Content>
+      </Wrapper>
     </View>
   );
 };
@@ -207,10 +207,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  content: {
-    flex: 1,
-    padding: 20,
   },
   imageContainer: {
     alignItems: "center",

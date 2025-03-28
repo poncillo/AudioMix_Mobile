@@ -54,27 +54,11 @@ export default function Panel({ navigation }) {
         </ScrollView>
 
         <View style={styles.bottomNav}>
-<<<<<<< HEAD
-          <TouchableOpacity
-            style={styles.navItem}
-            onPress={() => navigation.navigate('Dashboard', { screen: 'Categories' })}
-          >
-=======
           <TouchableOpacity style={styles.navItem} onPress={() => setCategoryVisible(true)}>
->>>>>>> ae6fa41 (Funcionalidad de registro de información de usuarios y navegación al carrito de compras)
             <Ionicons name="grid-outline" size={24} color={Colors.white} />
             <Text style={styles.navText}>Categories</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.navItem}
-            onPress={() => navigation.navigate('Profile')}
-          >
-            <Ionicons name="person-outline" size={24} color={Colors.white} />
-            <Text style={styles.navText}>Profile</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.navItem}
-
+          
           <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Profile')}>
             <Ionicons name="person-outline" size={24} color={Colors.white} />
             <Text style={styles.navText}>Profile</Text>
@@ -86,23 +70,12 @@ export default function Panel({ navigation }) {
           </TouchableOpacity>
         </View>
 
-<<<<<<< HEAD
-
-        <DropdownMenu
         {/* Menús Modales */}
-        <CategoryMenu 
-          visible={categoryVisible} 
-          onClose={() => setCategoryVisible(false)}
-        />
         <DropdownMenu 
           visible={menuVisible} 
           onClose={() => setMenuVisible(false)}
-          navigation={navigation} // Se pasa la navegación correctamente
+          navigation={navigation}
         />
-=======
-        <CategoryMenu visible={categoryVisible} onClose={() => setCategoryVisible(false)} />
-        <DropdownMenu visible={menuVisible} onClose={() => setMenuVisible(false)} navigation={navigation} />
->>>>>>> ae6fa41 (Funcionalidad de registro de información de usuarios y navegación al carrito de compras)
       </Content>
     </Wrapper>
   );
@@ -120,7 +93,7 @@ const styles = StyleSheet.create({
   },
   carouselImage: {
     width: CAROUSEL_WIDTH,
-    height: 180, // Ajustado para mayor visibilidad
+    height: 180,
     marginHorizontal: width * 0.1,
     resizeMode: 'contain',
   },
@@ -160,19 +133,6 @@ const styles = StyleSheet.create({
   logoSection: {
     alignItems: 'center',
     marginVertical: 30,
-  },
-  productsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    padding: 20,
-    gap: 15,
-  },
-  productCard: {
-    width: '30%',
-    aspectRatio: 1,
-    backgroundColor: Colors.white,
-    borderRadius: 10,
   },
   bottomNav: {
     zIndex: 10,
