@@ -1,30 +1,35 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase-config';
 
 const Categories = ({ navigation }) => {
-  const categories = [
-    {
-      id: 1,
-      name: 'Mixers',
-      image: require('../assets/ev_zlx_1.jpg'), // Necesitarás agregar las imágenes correctas
-    },
-    {
-      id: 2,
-      name: 'Microphones',
-      image: require('../assets/ev_zlx_1.jpg'), // Necesitarás agregar las imágenes correctas
-    },
-    {
-      id: 3,
-      name: 'Speakers',
-      image: require('../assets/ev_zlx_1.jpg'), // Necesitarás agregar las imágenes correctas
-    },
-    {
-      id: 4,
-      name: 'Lights',
-      image: require('../assets/ev_zlx_1.jpg'), // Necesitarás agregar las imágenes correctas
-    },
-  ];
+  const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, 'products'));
+      const productsData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setProducts(productsData);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      Alert.alert('Error', 'Failed to load products');
+    }
+  };
+
+  const addToCart = (product) => {
+    setCart([...cart, product]);
+    Alert.alert('Success', 'Product added to cart');
+  };
 
   return (
     <View style={styles.container}>
@@ -33,9 +38,16 @@ const Categories = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.navigate('Panel')}>
           <Icon name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>CATEGORIES</Text>
-        <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-          <Icon name="menu" size={24} color="white" />
+        <Text style={styles.headerTitle}>PRODUCTS</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('ShoppingCart', { cart })}>
+          <View style={styles.cartIconContainer}>
+            <Icon name="shopping-cart" size={24} color="white" />
+            {cart.length > 0 && (
+              <View style={styles.cartBadge}>
+                <Text style={styles.cartBadgeText}>{cart.length}</Text>
+              </View>
+            )}
+          </View>
         </TouchableOpacity>
       </View>
 
@@ -47,21 +59,25 @@ const Categories = ({ navigation }) => {
         />
       </View>
 
-      {/* Categories Grid */}
+      {/* Products Grid */}
       <ScrollView style={styles.content}>
         <View style={styles.grid}>
-          {categories.map((category) => (
-            <TouchableOpacity
-              key={category.id}
-              style={styles.categoryCard}
-              onPress={() => {
-                // Aquí puedes agregar la navegación a la lista de productos de cada categoría
-                console.log(`Selected category: ${category.name}`);
-              }}
-            >
-              <Image source={category.image} style={styles.categoryImage} />
-              <Text style={styles.categoryName}>{category.name}</Text>
-            </TouchableOpacity>
+          {products.map((product) => (
+            <View key={product.id} style={styles.productCard}>
+              <Image 
+                source={{ uri: `../assets/products/${product.name.toLowerCase().replace(/\s+/g, '')}.jpg` }}
+                style={styles.productImage}
+              />
+              <Text style={styles.productName}>{product.name}</Text>
+              <Text style={styles.productPrice}>${product.price}</Text>
+              <Text style={styles.productStock}>Stock: {product.num_stock}</Text>
+              <TouchableOpacity
+                style={styles.addButton}
+                onPress={() => addToCart(product)}
+              >
+                <Text style={styles.addButtonText}>Add to Cart</Text>
+              </TouchableOpacity>
+            </View>
           ))}
         </View>
       </ScrollView>
@@ -86,6 +102,25 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  cartIconContainer: {
+    position: 'relative',
+  },
+  cartBadge: {
+    position: 'absolute',
+    right: -6,
+    top: -6,
+    backgroundColor: 'red',
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cartBadgeText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
   logoContainer: {
     alignItems: 'center',
     marginVertical: 20,
@@ -104,25 +139,51 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 10,
   },
-  categoryCard: {
+  productCard: {
     width: '48%',
-    aspectRatio: 1,
     backgroundColor: '#222',
     borderRadius: 10,
     marginBottom: 15,
-    overflow: 'hidden',
+    padding: 10,
+    alignItems: 'center',
   },
-  categoryImage: {
+  productImage: {
     width: '100%',
-    height: '80%',
+    height: 150,
     resizeMode: 'cover',
+    borderRadius: 8,
   },
-  categoryName: {
+  productName: {
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+    marginTop: 8,
     textAlign: 'center',
-    padding: 8,
+  },
+  productPrice: {
+    color: '#4CAF50',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 4,
+  },
+  productStock: {
+    color: '#888',
+    fontSize: 14,
+    marginTop: 4,
+  },
+  addButton: {
+    backgroundColor: '#4CAF50',
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 5,
+    marginTop: 8,
+    width: '100%',
+  },
+  addButtonText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 

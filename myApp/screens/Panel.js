@@ -5,13 +5,13 @@ import Colors from '../constants/Colors';
 import Fonts from '../constants/Fonts';
 import DropdownMenu from '../components/controls/DropdownMenu';
 import { useState } from 'react';
+import Categories from '../navigation/External';
 
 const { width } = Dimensions.get('window');
 const CAROUSEL_WIDTH = width * 0.8;
 
 export default function Panel({ navigation }) {
   const [menuVisible, setMenuVisible] = useState(false);
-  const [categoryVisible, setCategoryVisible] = useState(false);
   const [searchVisible, setSearchVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
 
@@ -54,7 +54,7 @@ export default function Panel({ navigation }) {
         </ScrollView>
 
         <View style={styles.bottomNav}>
-          <TouchableOpacity style={styles.navItem} onPress={() => setCategoryVisible(true)}>
+          <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Categories')}>
             <Ionicons name="grid-outline" size={24} color={Colors.white} />
             <Text style={styles.navText}>Categories</Text>
           </TouchableOpacity>
