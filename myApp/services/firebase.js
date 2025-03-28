@@ -36,7 +36,7 @@ export const loginWithEmailPass = async (email, password) => {
     return true; // Usuario válido
     
   } catch (error) {
-    Alert.alert("Error", "Correo o contraseña incorrectos.");
+    Alert.alert("Error", "incorrect username or password");
     return false;
   }
 };
@@ -63,7 +63,7 @@ export const registerEmailPass = async (user) => {
       created_at: new Date().toISOString()
     });
 
-    Alert.alert("Éxito", "Usuario registrado correctamente.");
+    Alert.alert("Success", "User created successfully. Please log in.");
     return true;
 
   } catch (error) {

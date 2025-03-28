@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { Content, Wrapper, Title, Logo } from "../components/layout";
 import FormItem from "../components/controls/FormItem";
 import Button from "../components/controls/Button";
@@ -29,7 +29,7 @@ export default function Register({ navigation }) {
           password: "",
         });
         setLoading(false);
-        navigation.navigate("Profile");
+        navigation.navigate("Login");
       } else {
         setLoading(false);
       }

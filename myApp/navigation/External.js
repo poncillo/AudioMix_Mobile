@@ -4,7 +4,7 @@ import Welcome from '../screens/Welcome';
 import Register from '../screens/Register';
 import Panel from '../screens/Panel';
 import Profile from '../screens/Profile';
-import Dashboard from './Dashboard';
+import ShoppingCart from '../screens/ShoppingCart';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,14 +16,7 @@ export default function External() {
       <Stack.Screen name='Register' component={Register} options={{ headerShown: false }}/>
       <Stack.Screen name='Panel' component={Panel} options={{ headerShown: false }}/>
       <Stack.Screen name='Profile' component={Profile} options={{ headerShown: false }}/>
-      <Stack.Screen
-        name='Dashboard'
-        component={Dashboard}
-        options={{
-          headerShown: false,
-          animation: 'none'
-        }}
-      />
+      <Stack.Screen name='ShoppingCart' component={ShoppingCart} options={{ headerShown: false}}/>
     </Stack.Navigator>
   )
 }

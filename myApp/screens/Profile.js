@@ -49,20 +49,25 @@ const Profile = ({ navigation }) => {
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ImagePicker.MediaType.Images, // Updated to use ImagePicker.MediaType
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
     });
 
-    if (!result.canceled) {
+    if (!result.canceled && result.assets && result.assets[0].uri) {
       const source = result.assets[0].uri;
       await uploadImage(source);
+    } else {
+      Alert.alert("Error", "No image selected.");
     }
   };
 
   const uploadImage = async (uri) => {
-    if (!auth.currentUser) return;
+    if (!auth.currentUser || !uri) {
+      Alert.alert("Error", "Invalid image URI.");
+      return;
+    }
 
     try {
       setLoading(true);
@@ -92,13 +97,19 @@ const Profile = ({ navigation }) => {
     setLoading(true);
     if (auth.currentUser) {
       try {
-        await setDoc(doc(db, "users", auth.currentUser.uid), data, {
-          merge: true,
-        });
-        Alert.alert("Éxito", "Perfil actualizado correctamente");
+        const updatedData = {
+          full_name: data.full_name || "",
+          phone: data.phone || "",
+          age: data.age || "",
+          country: data.country || "",
+          address: data.address || "",
+        };
+
+        await setDoc(doc(db, "users", auth.currentUser.uid), updatedData, { merge: true });
+        Alert.alert("Succes", "Profile update successfully.");
       } catch (error) {
         console.error(error);
-        Alert.alert("Error", JSON.stringify(error));
+        Alert.alert("Error", "Can't update profile.");
       }
     }
     setLoading(false);
@@ -134,42 +145,42 @@ const Profile = ({ navigation }) => {
 
         <FormItem
           value={data.full_name}
-          label="Nombre completo"
-          onChange={(value) => setData((prev) => ({ ...prev, full_name: value }))}
+          label="Full Name"
+          onChangeText={(value) => setData((prev) => ({ ...prev, full_name: value }))} 
           textColor={"white"}
         />
         <FormItem value={data.email} label="Email" editable={false} textColor={"white"} />
         <FormItem value="******" label="Password" editable={false} textColor={"white"} />
         <FormItem
           value={data.phone}
-          label="Teléfono"
+          label="Phone"
           keyboardType="phone-pad"
-          onChange={(value) => setData((prev) => ({ ...prev, phone: value }))}
+          onChangeText={(value) => setData((prev) => ({ ...prev, phone: value.trim() }))} 
           textColor={"white"}
         />
         <FormItem
           value={data.age}
-          label="Edad"
+          label="Age"
           keyboardType="number-pad"
-          onChange={(value) => setData((prev) => ({ ...prev, age: value }))}
+          onChangeText={(value) => setData((prev) => ({ ...prev, age: value.trim() }))} 
           textColor={"white"}
         />
         <FormItem
           value={data.country}
-          label="País"
-          onChange={(value) => setData((prev) => ({ ...prev, country: value }))}
+          label="Country"
+          onChangeText={(value) => setData((prev) => ({ ...prev, country: value }))} 
           textColor={"white"}
         />
         <FormItem
           value={data.address}
-          label="Dirección"
-          onChange={(value) => setData((prev) => ({ ...prev, address: value }))}
+          label="Adress"
+          onChangeText={(value) => setData((prev) => ({ ...prev, address: value }))} 
           textColor={"white"}
         />
 
         <Button
           onPress={updateUser}
-          label={"ACTUALIZAR"}
+          label={"SUBMIT UPDATE"}
           isLoading={loading}
           style={styles.whiteButton}
           textStyle={styles.blackText}

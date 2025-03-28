@@ -3,93 +3,41 @@ import { useEffect, useRef } from 'react';
 import Colors from '../../constants/Colors';
 import Fonts from '../../constants/Fonts';
 import { logoutAuth } from '../../services/firebase';
-import { auth } from '../../firebase-config';
 
 export default function DropdownMenu({ visible, onClose, navigation }) {
+
   const menuItems = [
-    { id: 1, title: 'Home' },
-    { id: 2, title: 'Technical Support' },
-    { id: 3, title: 'Log Out' }
-    { id: 3, title: 'Log Out' },
-    { id: 4, title: 'States' },
+    { id: 1, title: 'Home', action: () => navigation.navigate('Panel') },
+    { id: 2, title: 'Technical Support', action: () => { console.log('Navigating to Technical Support'); navigation.navigate('TechnicalSupport');} },
+    { id: 3, title: 'Log Out', action: handleLogout },
   ];
 
-  const handleLogout = async () => {
+  async function handleLogout() {
     try {
       await logoutAuth();
-      if (navigation) {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'Login' }],
-        });
-      } else {
-        console.error('Navigation prop is undefined');
-      }
+      navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
     } catch (error) {
-      Alert.alert("Error", "No se pudo cerrar sesión: " + error.message);
+      Alert.alert("Error", "Can't entry to the session: " + error.message);
     }
-  };
+  }
 
   const slideAnim = useRef(new Animated.Value(-200)).current;
 
   useEffect(() => {
-    if (visible) {
-      Animated.timing(slideAnim, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
-    } else {
-      Animated.timing(slideAnim, {
-        toValue: -200,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
-    }
+    Animated.timing(slideAnim, {
+      toValue: visible ? 0 : -200,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
   }, [visible]);
 
   if (!visible) return null;
 
   return (
-    <TouchableOpacity 
-      style={styles.container} 
-      activeOpacity={1} 
-      onPress={onClose}
-    >
-      <Animated.View 
-        style={[
-          styles.menu,
-          {
-            transform: [{ translateY: slideAnim }],
-          },
-        ]}
-      >
+    <TouchableOpacity style={styles.container} activeOpacity={1} onPress={onClose}>
+      <Animated.View style={[styles.menu, { transform: [{ translateY: slideAnim }] }]}>
         {menuItems.map((item) => (
-          <TouchableOpacity 
-            key={item.id} 
-            style={styles.menuItem}
-            onPress={() => {
-              onClose();
-              switch (item.title) {
-                case 'Home':
-                  navigation.navigate('Dashboard', {
-                    screen: 'Home'
-                  });
-                  break;
-                case 'Profile':
-                  navigation.navigate('Profile');
-                  break;
-                case 'Technical Support':
-                  navigation.navigate('Dashboard', {
-                    screen: 'Technical Support'
-                  });
-                  break;
-                case 'Log Out':
-                  handleLogout();
-                  break;
-              }
-            }}
-          >
+          <TouchableOpacity key={item.id} style={styles.menuItem} onPress={() => { onClose(); item.action(); }}>
             <Text style={styles.menuText}>{item.title}</Text>
           </TouchableOpacity>
         ))}

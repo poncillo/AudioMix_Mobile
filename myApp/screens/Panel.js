@@ -1,29 +1,28 @@
-import { Content, Header, Wrapper, Logo } from '../components/layout';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Dimensions } from 'react-native';
+import { Content, Wrapper, Logo } from '../components/layout';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Dimensions, TextInput } from 'react-native';
 import { Ionicons, EvilIcons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import Fonts from '../constants/Fonts';
 import DropdownMenu from '../components/controls/DropdownMenu';
 import { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 const CAROUSEL_WIDTH = width * 0.8;
 
-export default function Panel() {
+export default function Panel({ navigation }) {
   const [menuVisible, setMenuVisible] = useState(false);
   const [categoryVisible, setCategoryVisible] = useState(false);
-  const navigation = useNavigation(); // Corrección: Usar useNavigation directamente
+  const [searchVisible, setSearchVisible] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
-  return ( //Hello, submit the repository aaa
+  return (
     <Wrapper backgroundColor={Colors.black}>
       <Content style={styles.content}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
-          {/* Welcome Section */}
           <View style={styles.welcomeSection}>
             <Text style={styles.welcomeText}>Hey, Welcome to AudioMix Mobile</Text>
             <View style={styles.iconContainer}>
-              <TouchableOpacity style={styles.icon}>
+              <TouchableOpacity style={styles.icon} onPress={() => setSearchVisible(!searchVisible)}>
                 <Ionicons name="search" size={24} color={Colors.white} />
               </TouchableOpacity>
               <TouchableOpacity style={styles.icon} onPress={() => navigation.navigate('ShoppingCart')}>
@@ -32,42 +31,37 @@ export default function Panel() {
             </View>
           </View>
 
-          {/* Logo Section */}
+          {searchVisible && (
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search..."
+              placeholderTextColor={Colors.gray}
+              value={searchText}
+              onChangeText={setSearchText}
+            />
+          )}
+
           <View style={styles.logoSection}>
             <Logo type="white" width={150} />
           </View>
 
-          {/* Carousel Section */}
-          <ScrollView 
-            horizontal 
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            style={styles.carousel}
-          >
-            <Image 
-              source={require('../assets/ev_zlx_1.jpg')} 
-              style={styles.carouselImage}
-              resizeMode="contain"
-            />
-            <Image 
-              source={require('../assets/ev_zlx_2.jpg')} 
-              style={styles.carouselImage}
-              resizeMode="contain"
-            />
+          <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false} style={styles.carousel}>
+            <Image source={require('../assets/ev_zlx_1.jpg')} style={styles.carouselImage} resizeMode="contain" />
+            <Image source={require('../assets/ev_zlx_2.jpg')} style={styles.carouselImage} resizeMode="contain" />
           </ScrollView>
 
-          {/* Carousel Text */}
-          <Text style={styles.carouselText}>
-            You know the new line of EV ZLX? Try it now!
-          </Text>
+          <Text style={styles.carouselText}>You know the new line of EV ZLX? Try it now!</Text>
         </ScrollView>
 
-        {/* Bottom Navigation */}
         <View style={styles.bottomNav}>
+<<<<<<< HEAD
           <TouchableOpacity
             style={styles.navItem}
             onPress={() => navigation.navigate('Dashboard', { screen: 'Categories' })}
           >
+=======
+          <TouchableOpacity style={styles.navItem} onPress={() => setCategoryVisible(true)}>
+>>>>>>> ae6fa41 (Funcionalidad de registro de información de usuarios y navegación al carrito de compras)
             <Ionicons name="grid-outline" size={24} color={Colors.white} />
             <Text style={styles.navText}>Categories</Text>
           </TouchableOpacity>
@@ -81,22 +75,18 @@ export default function Panel() {
           <TouchableOpacity
             style={styles.navItem}
 
-          <TouchableOpacity 
-            style={styles.navItem} 
-            onPress={() => navigation.navigate('Profile')}>
+          <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Profile')}>
             <Ionicons name="person-outline" size={24} color={Colors.white} />
             <Text style={styles.navText}>Profile</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity 
-            style={styles.navItem} 
-            onPress={() => setMenuVisible(true)}
-          >
+          <TouchableOpacity style={styles.navItem} onPress={() => setMenuVisible(true)}>
             <Ionicons name="menu-outline" size={24} color={Colors.white} />
             <Text style={styles.navText}>Menu</Text>
           </TouchableOpacity>
         </View>
 
+<<<<<<< HEAD
 
         <DropdownMenu
         {/* Menús Modales */}
@@ -109,6 +99,10 @@ export default function Panel() {
           onClose={() => setMenuVisible(false)}
           navigation={navigation} // Se pasa la navegación correctamente
         />
+=======
+        <CategoryMenu visible={categoryVisible} onClose={() => setCategoryVisible(false)} />
+        <DropdownMenu visible={menuVisible} onClose={() => setMenuVisible(false)} navigation={navigation} />
+>>>>>>> ae6fa41 (Funcionalidad de registro de información de usuarios y navegación al carrito de compras)
       </Content>
     </Wrapper>
   );
@@ -201,5 +195,13 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.family.montserratRegular,
     fontSize: 12,
     marginTop: 5,
-  }
+  },
+  searchInput: {
+    backgroundColor: Colors.white,
+    color: Colors.black,
+    borderRadius: 5,
+    padding: 10,
+    marginHorizontal: 20,
+    marginBottom: 20,
+  },
 });
